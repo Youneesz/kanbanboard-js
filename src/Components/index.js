@@ -5,3 +5,5 @@ export { default as Newsec } from './newsec/Newsec';
 export { default as Ongoing } from './ongoing/Ongoing';
 export { default as Task } from './Task/Task';
 export { default as Addingpanel } from './addingpanel/Addingpanel';
+export { default as Member } from './member/member';
+export { default as Memberlist } from './memberslist/memberslist';
