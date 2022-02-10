@@ -11,6 +11,7 @@ function App() {
   const [showlist, setshowlist] = React.useState(false);
   const [tasks, settasks] = React.useState([]);
   const [ongoingtasks, setongoing] = React.useState([]);
+  const [cancelledtasks, setcancelled] = React.useState([]);
 
   const [blur, setblur] = React.useState('');
 
@@ -42,10 +43,25 @@ function App() {
     const finish = document.getElementById('taskfinish').value;
     const startdate = new Date(start);
     const finishdate = new Date(finish);
-    if (name !== '' && owner !== '' && start !== '' && finish !== '') {
-      if (startdate.getTime() < finishdate.getTime()) {
+
+    const tolocalestart = new Date(start).toLocaleDateString();
+    const tolocalefinish = new Date(finish).toLocaleDateString();
+
+    const today = new Date().toLocaleDateString();
+    console.log(startdate);
+    console.log(finishdate);
+    console.log('today date: ' + today);
+    if (name !== '' && owner !== '' && start !== '' && finish !== '')
+    {
+      if (startdate.getTime() < finishdate.getTime()) 
+      {
         console.log(`name:${name} owner:${owner} desc:${desc} start:${start} finish:${finish}`);
         settasks(tasks.concat(<Task id={tasks.length} name={name} owner={owner} desc={desc} start={start} finish={finish} />));
+        if (today === tolocalestart) 
+        {
+          console.log('equals')
+          setongoing(ongoingtasks.concat(<Task id={tasks.length} name={name} owner={owner} desc={desc} start={start} finish={finish} />));
+        }
         addtask();
         taskSuccess();
       }
@@ -56,13 +72,7 @@ function App() {
     else {
       fieldErrorNotification();
     }
-    const today = new Date();
-    if (startdate.getDate() == today.getDate()) {
-      console.log('Date is todays date')
-      setongoing(ongoingtasks.concat(<Task id={tasks.length} name={name} owner={owner} desc={desc} start={start} finish={finish} />));
-    }
   }
-  //make member list useState
 
   return (
     <div className="App">
@@ -85,13 +95,13 @@ function App() {
           <Newsec tasks={tasks} />
         </div>
         <div className="col-sm">
-          <Ongoing tasks={ongoingtasks}/>
+          <Ongoing tasks={ongoingtasks} />
         </div>
         <div className="col-sm">
           <Finished />
         </div>
         <div className="col-sm">
-          <Cancelled />
+          <Cancelled tasks={cancelledtasks} />
         </div>
       </div>
     </div>
