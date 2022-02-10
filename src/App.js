@@ -8,15 +8,30 @@ import logo from './Components/Navbar/logo.jpg'
 function App() {
 
   const [add, setadd] = React.useState(false);
-
+  const [showlist, setshowlist] = React.useState(false);
   const [tasks, settasks] = React.useState([]);
-
   const [ongoingtasks, setongoing] = React.useState([]);
 
-  const [showlist, setshowlist] = React.useState(false);
+  const [blur, setblur] = React.useState('');
 
   function addtask() {
     setadd(!add);
+    if (!add) {
+      setblur('blur(4px)');
+    }
+    else {
+      setblur('');
+    }
+  }
+
+  function showmembers() {
+    setshowlist(!showlist);
+    if (!showlist) {
+      setblur('blur(4px)');
+    }
+    else {
+      setblur('');
+    }
   }
 
   function apply() {
@@ -25,9 +40,9 @@ function App() {
     const desc = document.getElementById('taskdesc').value;
     const start = document.getElementById('taskstart').value;
     const finish = document.getElementById('taskfinish').value;
+    const startdate = new Date(start);
+    const finishdate = new Date(finish);
     if (name !== '' && owner !== '' && start !== '' && finish !== '') {
-      const startdate = new Date(start);
-      const finishdate = new Date(finish);
       if (startdate.getTime() < finishdate.getTime()) {
         console.log(`name:${name} owner:${owner} desc:${desc} start:${start} finish:${finish}`);
         settasks(tasks.concat(<Task id={tasks.length} name={name} owner={owner} desc={desc} start={start} finish={finish} />));
@@ -41,13 +56,19 @@ function App() {
     else {
       fieldErrorNotification();
     }
+    const today = new Date();
+    if (startdate.getDate() == today.getDate()) {
+      console.log('Date is todays date')
+      setongoing(ongoingtasks.concat(<Task id={tasks.length} name={name} owner={owner} desc={desc} start={start} finish={finish} />));
+    }
   }
-
   //make member list useState
 
   return (
     <div className="App">
-      <Navbar addtask={addtask} />
+      <Navbar addtask={addtask} showusers={showmembers} />
+      {showlist && <Memberlist />}
+      {add && <Addingpanel apply={apply} />}
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -59,12 +80,12 @@ function App() {
         draggable
         pauseOnHover
       />
-      {add ? <Addingpanel apply={apply} /> : (<div className="row m-2 p-2">
+      <div className="row m-2 p-2" style={{ filter: blur }}>
         <div className="col-sm">
           <Newsec tasks={tasks} />
         </div>
         <div className="col-sm">
-          <Ongoing />
+          <Ongoing tasks={ongoingtasks}/>
         </div>
         <div className="col-sm">
           <Finished />
@@ -72,7 +93,7 @@ function App() {
         <div className="col-sm">
           <Cancelled />
         </div>
-      </div>)}
+      </div>
     </div>
   );
 }

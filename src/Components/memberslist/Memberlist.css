@@ -1,0 +1,7 @@
+#memberlist {
+    width: 300px;
+    position: absolute;
+    z-index: 1;
+    margin: 10px;
+    backdrop-filter: blur(2px);
+}

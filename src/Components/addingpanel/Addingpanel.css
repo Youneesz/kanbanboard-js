@@ -1,0 +1,5 @@
+#addingpanel {
+    width: 700px;
+    position: absolute;
+    z-index: 1;
+}

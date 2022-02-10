@@ -1,8 +1,9 @@
 import React from 'react'
+import './Addingpanel.css'
 
 const Addingpanel = ({ apply }) => {
     return (
-        <div className='card mt-2 ms-3' style={{ width: '700px' }}>
+        <div className='card mt-2 ms-3' id='addingpanel'>
             <div className='card-header'>
                 Add your task:
             </div>
